@@ -1,0 +1,13 @@
+### Variables 
+@apiurl = http://localhost:8000
+
+### GET tasks
+GET {{apiurl}}/tasks HTTP/1.1
+
+### POST tasks - create
+POST {{apiurl}}/tasks HTTP/1.1
+Content-Type: application/json
+
+{
+   "title": "New task"
+}
