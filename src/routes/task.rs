@@ -1,7 +1,7 @@
 use axum::{
     extract::{Path, State},
     response::IntoResponse,
-    routing::{get, post},
+    routing::{get, patch, post},
     Json, Router,
 };
 use uuid::Uuid;
@@ -17,13 +17,14 @@ pub(super) fn configure_routes() -> Router<Handler> {
         Router::new()
             .route("/:task_id", get(get_task_by_id))
             .route("/", get(list_tasks))
-            .route("/", post(create_task)),
+            .route("/", post(create_task))
+            .route("/:task_id", patch(remove_task_by_id)),
     )
 }
 
 async fn get_task_by_id(
     State(handler): State<Handler>,
-    Path(task_id): Path<Uuid>
+    Path(task_id): Path<Uuid>,
 ) -> Result<impl IntoResponse> {
     let task = handler.get_task_by_id(task_id).await?;
 
@@ -41,6 +42,15 @@ async fn create_task(
     Json(task): Json<CreateTask>,
 ) -> Result<impl IntoResponse> {
     let task = handler.create_task(task).await?;
+
+    Ok(Json::from(task))
+}
+
+async fn remove_task_by_id(
+    State(handler): State<Handler>,
+    Path(task_id): Path<Uuid>,
+) -> Result<impl IntoResponse> {
+    let task = handler.remove_task_by_id(task_id).await?;
 
     Ok(Json::from(task))
 }
