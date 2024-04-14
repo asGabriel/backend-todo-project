@@ -16,4 +16,12 @@ Content-Type: application/json
 GET {{apiurl}}/tasks/287dab37-b96f-455b-9ba5-bea78f285030 HTTP/1.1
 
 ### REMOVE - task by id
-PATCH {{apiurl}}/tasks/287dab37-b96f-455b-9ba5-bea78f285030 HTTP/1.1
+DELETE {{apiurl}}/tasks/287dab37-b96f-455b-9ba5-bea78f285030 HTTP/1.1
+
+### UPDATE - task by id
+PATCH {{apiurl}}/tasks/d1af6d9d-46b7-47c7-afaf-c86dead721a7
+Content-Type: application/json
+
+{
+   "title": "Another taskName"
+}
