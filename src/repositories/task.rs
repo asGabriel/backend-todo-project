@@ -8,17 +8,30 @@ use uuid::Uuid;
 
 #[async_trait::async_trait]
 pub trait TaskRepository {
+    async fn get_task_by_id(&self, task_id: Uuid) -> Result<Option<Task>>;
     async fn list_tasks(&self) -> Result<Vec<Task>>;
     async fn create_tasks(&self, task: CreateTask) -> Result<Task>;
 }
 
 #[async_trait::async_trait]
 impl TaskRepository for SqlxRepository {
+    async fn get_task_by_id(&self, task_id: Uuid) -> Result<Option<Task>> {
+        let task = sqlx::query_as!(
+            Task,
+            r#"
+            SELECT * FROM TASKS WHERE DELETED_AT IS NULL AND TASK_ID=$1
+            "#,
+            task_id
+        ).fetch_optional(&self.pool).await?;
+
+        Ok(task)
+    }
+
     async fn list_tasks(&self) -> Result<Vec<Task>> {
         let tasks = sqlx::query_as!(
             Task,
             r#"
-            SELECT * FROM TASKS
+            SELECT * FROM TASKS WHERE DELETED_AT IS NULL
             "#
         )
         .fetch_all(&self.pool)
@@ -41,4 +54,5 @@ impl TaskRepository for SqlxRepository {
 
         Ok(task)
     }
+
 }

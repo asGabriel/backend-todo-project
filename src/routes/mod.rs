@@ -11,6 +11,10 @@ impl IntoResponse for Error {
     fn into_response(self) -> axum::response::Response {
         match self {
             Self::DatabaseError(err) => (StatusCode::INTERNAL_SERVER_ERROR, format!("{err:?}")),
+            Self::TaskNotFound(task_id) => (
+                StatusCode::NOT_FOUND,
+                format!("Task id {task_id:?} not found"),
+            ),
         }
         .into_response()
     }

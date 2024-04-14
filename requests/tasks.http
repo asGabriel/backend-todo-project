@@ -11,3 +11,6 @@ Content-Type: application/json
 {
    "title": "New task"
 }
+
+### GET - task by id
+GET {{apiurl}}/tasks/287dab37-b96f-455b-9ba5-bea78f285030 HTTP/1.1
