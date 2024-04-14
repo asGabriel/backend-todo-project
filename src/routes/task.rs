@@ -1,11 +1,13 @@
-use axum::{extract::State, routing::get, Router};
+use axum::{extract::State, response::IntoResponse, routing::get, Json, Router};
 
-use crate::handlers::Handler;
+use crate::{domains::error::Result, handlers::Handler};
 
 pub(super) fn configure_routes() -> Router<Handler> {
-    Router::new().route("/", get(create_task))
+    Router::new().nest("/tasks", Router::new().route("/", get(asd)))
 }
 
-async fn create_task(State(handler): State<Handler>) {
-    println!("this method will create a new task")
+async fn asd(State(handler): State<Handler>) -> Result<impl IntoResponse> {
+    let task = handler.list_tasks().await?;
+
+    Ok(Json::from(task))
 }

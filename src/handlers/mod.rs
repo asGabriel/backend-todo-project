@@ -1,4 +1,5 @@
 use std::sync::Arc;
+pub mod task;
 
 use crate::repositories::task::TaskRepository;
 
