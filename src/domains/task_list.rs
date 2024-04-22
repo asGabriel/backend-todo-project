@@ -17,6 +17,12 @@ pub struct TaskList {
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CreateTaskList {
+pub struct CreateTaskListDTO {
+    pub title: String,
+}
+
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct UpdateTaskListDTO {
     pub title: String,
 }
