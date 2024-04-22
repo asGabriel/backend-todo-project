@@ -1,5 +1,7 @@
+use uuid::Uuid;
+
 use crate::domains::{
-    error::Result,
+    error::{Error, Result},
     task_list::{CreateTaskList, TaskList},
 };
 
@@ -12,5 +14,12 @@ impl Handler {
 
     pub async fn list_task_lists(&self) -> Result<Vec<TaskList>> {
         self.task_list_repository.list_task_lists().await
+    }
+
+    pub async fn get_list_by_id(&self, task_list_id: Uuid) -> Result<TaskList> {
+        self.task_list_repository
+            .get_list_by_id(task_list_id)
+            .await?
+            .ok_or(Error::TaskListNotFound(task_list_id))
     }
 }

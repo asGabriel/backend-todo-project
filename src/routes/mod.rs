@@ -18,6 +18,10 @@ impl IntoResponse for Error {
                 StatusCode::NOT_FOUND,
                 format!("Task id {task_id:?} not found"),
             ),
+            Self::TaskListNotFound(task_list_id) => (
+                StatusCode::NOT_FOUND,
+                format!("Task list id {task_list_id:?} not found"),
+            ),
         }
         .into_response()
     }

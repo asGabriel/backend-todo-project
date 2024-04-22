@@ -7,6 +7,8 @@ pub enum Error {
     DatabaseError(#[from] sqlx::Error),
     #[error("Task not found")]
     TaskNotFound(Uuid),
+    #[error("Task List not found")]
+    TaskListNotFound(Uuid),
 }
 
 pub type Result<T> = std::result::Result<T, Error>;

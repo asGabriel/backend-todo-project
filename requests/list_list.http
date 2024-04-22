@@ -12,3 +12,6 @@ Content-Type: application/json
 
 ### GET - list task lists
 GET {{apiurl}}/{{apiendpoint}} HTTP/1.1
+
+### GET - get task list by id
+GET {{apiurl}}/{{apiendpoint}}/9443fe78-7738-42de-ba11-79925ac9dc6c HTTP/1.1

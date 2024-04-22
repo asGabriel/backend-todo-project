@@ -10,6 +10,7 @@ use uuid::Uuid;
 pub trait TaskListRepository {
     async fn create_task_list(&self, task_list: CreateTaskList) -> Result<TaskList>;
     async fn list_task_lists(&self) -> Result<Vec<TaskList>>;
+    async fn get_list_by_id(&self, task_list_id: Uuid) -> Result<Option<TaskList>>;
 }
 
 #[async_trait::async_trait]
@@ -44,5 +45,19 @@ impl TaskListRepository for SqlxRepository {
         .await?;
 
         Ok(task_lists)
+    }
+
+    async fn get_list_by_id(&self, task_list_id: Uuid) -> Result<Option<TaskList>> {
+        let task_list = sqlx::query_as!(
+            TaskList,
+            r#"
+            SELECT * FROM TASKLISTS WHERE DELETED_AT IS NULL AND TASK_LIST_ID=$1
+            "#,
+            task_list_id
+        )
+        .fetch_optional(&self.pool)
+        .await?;
+
+        Ok(task_list)
     }
 }
