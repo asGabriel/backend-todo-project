@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS LISTS (
+    list_id UUID PRIMARY KEY,
+    title TEXT NOT NULL,
+    task_ids UUID[] NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    updated_at TIMESTAMPTZ DEFAULT NULL,
+    deleted_at TIMESTAMPTZ DEFAULT NULL
+);
+

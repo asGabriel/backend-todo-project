@@ -1,5 +1,6 @@
 use sqlx::PgPool;
 pub mod task;
+pub mod task_list;
 
 #[derive(Clone)]
 pub struct SqlxRepository {
