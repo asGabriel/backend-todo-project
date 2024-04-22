@@ -1,10 +1,14 @@
 ### Variables 
 @apiurl = http://localhost:8000
+@apiendpoint = task-lists
 
 ### POST - create list_task
-POST {{apiurl}}/list-task HTTP/1.1
+POST {{apiurl}}/{{apiendpoint}} HTTP/1.1
 Content-Type: application/json
 
 {
    "title": "Home list"
 }
+
+### GET - list task lists
+GET {{apiurl}}/{{apiendpoint}} HTTP/1.1
