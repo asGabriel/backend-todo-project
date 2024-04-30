@@ -1,6 +1,6 @@
 use crate::domains::{
     error::Result,
-    task::{CreateTaskDTO, Task, UpdateTaskDTO},
+    task::{CreateTaskDTO, Task},
 };
 
 use super::SqlxRepository;
@@ -12,7 +12,7 @@ pub trait TaskRepository {
     async fn list_tasks(&self) -> Result<Vec<Task>>;
     async fn create_tasks(&self, task: CreateTaskDTO) -> Result<Task>;
     async fn remove_task_by_id(&self, task_id: Uuid) -> Result<Option<Task>>;
-    async fn update_task_by_id(&self, task_id: Uuid, task: UpdateTaskDTO) -> Result<Option<Task>>;
+    async fn update_task_by_id(&self, task: Task) -> Result<Option<Task>>;
 }
 
 #[async_trait::async_trait]
@@ -48,10 +48,11 @@ impl TaskRepository for SqlxRepository {
         let task = sqlx::query_as!(
             Task,
             r#"
-            INSERT INTO TASKS(TASK_ID, TITLE) VALUES($1, $2) RETURNING *
+            INSERT INTO TASKS(TASK_ID, TITLE, TASK_LIST_ID) VALUES($1, $2, $3) RETURNING *
             "#,
             Uuid::new_v4(),
-            task.title
+            task.title,
+            task.task_list_id
         )
         .fetch_one(&self.pool)
         .await?;
@@ -74,15 +75,17 @@ impl TaskRepository for SqlxRepository {
         Ok(task)
     }
 
-    async fn update_task_by_id(&self, task_id: Uuid, task: UpdateTaskDTO) -> Result<Option<Task>> {
+    async fn update_task_by_id(&self, task: Task) -> Result<Option<Task>> {
         let task = sqlx::query_as!(
             Task,
             r#"
-            UPDATE TASKS SET TITLE=$1, UPDATED_AT=NOW() WHERE DELETED_AT IS NULL AND TASK_ID=$2
+            UPDATE TASKS SET TITLE=$1, TASK_LIST_ID=$2, STATUS=$3, UPDATED_AT=NOW() WHERE DELETED_AT IS NULL AND TASK_ID=$4
             RETURNING *
             "#,
             task.title,
-            task_id
+            task.task_list_id,
+            task.status,
+            task.task_id
         )
         .fetch_optional(&self.pool)
         .await?;
