@@ -1,0 +1,3 @@
+ALTER TABLE tasks ALTER COLUMN updated_at SET DEFAULT NOW();
+
+ALTER TABLE tasklists ALTER COLUMN updated_at SET DEFAULT NOW();

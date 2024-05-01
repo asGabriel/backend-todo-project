@@ -1,0 +1,28 @@
+### Variables 
+@apiurl = http://localhost:8000
+@apiendpoint = task-lists
+
+### POST - create list_task
+POST {{apiurl}}/{{apiendpoint}} HTTP/1.1
+Content-Type: application/json
+
+{
+   "title": "House work"
+}
+
+### GET - list task lists
+GET {{apiurl}}/{{apiendpoint}} HTTP/1.1
+
+### GET - get task list by id
+GET {{apiurl}}/{{apiendpoint}}/9443fe78-7738-42de-ba11-79925ac9dc6c HTTP/1.1
+
+### UPDATE - update list by id
+PATCH {{apiurl}}/{{apiendpoint}}/6d66f4cc-cd59-42a4-8c60-da6faa5ec7d5 HTTP/1.1
+Content-Type: application/json
+
+{
+   "title": "Work list"
+}
+
+### DELETE - delete list by id
+DELETE {{apiurl}}/{{apiendpoint}}/6d66f4cc-cd59-42a4-8c60-da6faa5ec7d5 HTTP/1.1

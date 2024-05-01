@@ -30,9 +30,17 @@ impl Handler {
             .ok_or(Error::TaskNotFound(task_id))
     }
 
-    pub async fn update_task_by_id(&self, task_id: Uuid, task: UpdateTaskDTO) -> Result<Task> {
+    pub async fn update_task_by_id(&self, task_id: Uuid, payload: UpdateTaskDTO) -> Result<Task> {
+        let mut result = self.get_task_by_id(task_id).await?;
+
+        if let Some(list_id) = payload.task_list_id {
+            self.task_list_repository.get_list_by_id(list_id).await?;
+        }
+
+        result.update_changes(payload);
+
         self.task_repository
-            .update_task_by_id(task_id, task)
+            .update_task_by_id(result)
             .await?
             .ok_or(Error::TaskNotFound(task_id))
     }

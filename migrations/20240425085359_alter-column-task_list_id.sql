@@ -1,0 +1,1 @@
+ALTER TABLE tasks ALTER COLUMN task_list_id SET NOT NULL;

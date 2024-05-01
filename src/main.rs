@@ -25,7 +25,7 @@ async fn main() {
         .expect("Could not connect to database");
 
     let sqlx_repository = Arc::new(SqlxRepository::new(pool));
-    let handler = Handler::new(sqlx_repository);
+    let handler = Handler::new(sqlx_repository.clone(), sqlx_repository);
 
     let app: Router = routes::configure_routes().with_state(handler);
 
