@@ -9,7 +9,7 @@ POST {{apiurl}}/tasks HTTP/1.1
 Content-Type: application/json
 
 {
-   "title": "New task",
+   "title": "Clean room",
    "taskListId": "4301fdca-9e33-4307-845f-2fa0250648f5"
 }
 

@@ -7,7 +7,7 @@ POST {{apiurl}}/{{apiendpoint}} HTTP/1.1
 Content-Type: application/json
 
 {
-   "title": "New list"
+   "title": "House work"
 }
 
 ### GET - list task lists
